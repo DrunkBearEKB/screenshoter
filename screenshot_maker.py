@@ -15,7 +15,7 @@ def send_to_clipboard(clip_type, data) -> None:
     win32clipboard.CloseClipboard()
 
 
-def make_screenshot(point1: (int, int), point2: (int, int), ) -> None:
+def make_screenshot(point1: (int, int), point2: (int, int)) -> None:
     _datetime = datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S")
 
     if not os.path.exists('screenshots'):
