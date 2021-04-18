@@ -8,7 +8,7 @@ from io import BytesIO
 import os
 
 
-def send_to_clipboard(clip_type, data):
+def send_to_clipboard(clip_type, data) -> None:
     win32clipboard.OpenClipboard()
     win32clipboard.EmptyClipboard()
     win32clipboard.SetClipboardData(clip_type, data)
