@@ -1,6 +1,6 @@
 # _ScreenshotMaker_
 
-### Description  
+#### _Description:_
 
 **A program for creating screenshots of the screen.**
 
