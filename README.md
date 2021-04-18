@@ -19,4 +19,6 @@
 
 ---
 
-### _Author: Ivanenko Grigoriy, Ural State Federal University, 2021._
+### _Author:_ 
+
+**Ivanenko Grigoriy, Ural State Federal University, 2021.**
