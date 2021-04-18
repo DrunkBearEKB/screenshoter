@@ -11,7 +11,7 @@
 ### _Required:_
 **Python 3.9 and higher version**
 
-#### _To use this library you need to have the following installed modules:_
+### _To use this library you need to have the following installed modules:_
 1. **pyautogui** - https://github.com/asweigart/pyautogui
 2. **keyboard** - https://github.com/boppreh/keyboard
 3. **numpy** - https://github.com/numpy/numpy
