@@ -6,7 +6,7 @@ A program for creating screenshots of the screen.
 
 After launching, the program waits for pressing the keyboard shortcut Ctrl and Printscreen. Then you should select the part of the screen that you would like to capture. The resulting image will be saved to the clipboard, and the result will be shown.
 
-**You can also compile it by running the executable bat file `exe_creator.bat`
+You can also compile it by running the executable bat file `exe_creator.bat`
 
 ---
 
