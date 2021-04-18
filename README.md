@@ -1,6 +1,6 @@
 # _ScreenshotMaker_
 
-#### _Description:_
+### _Description:_
 
 **A program for creating screenshots of the screen.**
 
@@ -8,7 +8,7 @@
 
 ---
 
-#### _Required:_
+### _Required:_
 **Python 3.9 and higher version**
 
 #### _To use this library you need to have the following installed modules:_
@@ -19,4 +19,4 @@
 
 ---
 
-#### _Author: Ivanenko Grigoriy, Ural State Federal University, 2021._
+### _Author: Ivanenko Grigoriy, Ural State Federal University, 2021._
