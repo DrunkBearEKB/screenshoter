@@ -25,12 +25,14 @@ def parse_config() -> configparser.ConfigParser:
 def create_default_config() -> None:
     config = configparser.ConfigParser()
 
-    config.add_section('Settings')
-    config['Settings']['border_width'] = '2'
-    config['Settings']['border_coef_red'] = '255'
-    config['Settings']['border_coef_green'] = '255'
-    config['Settings']['border_coef_blue'] = '255'
-    config['Settings']['size_buffer_saving'] = '5'
+    config.add_section('Settings.Selecting')
+    config['Settings.Selecting']['border_width'] = '2'
+    config['Settings.Selecting']['border_coef_red'] = '255'
+    config['Settings.Selecting']['border_coef_green'] = '255'
+    config['Settings.Selecting']['border_coef_blue'] = '255'
+
+    config.add_section('Settings.Buffer')
+    config['Settings.Buffer']['size_buffer_saving'] = '5'
 
     with open(CONFIG_FILE_NAME, 'w') as file:
         config.write(file)
@@ -86,12 +88,12 @@ def make_screenshot(point1: (int, int), point2: (int, int), buf_size) -> None:
 
 def main() -> None:
     config = parse_config()
-    _width = int(config['Settings']['border_width'])
+    _width = int(config['Settings.Selecting']['border_width'])
     _width_half = (_width + 1) // 2 + 2
-    _color = (int(config['Settings']['border_coef_blue']),
-              int(config['Settings']['border_coef_green']),
-              int(config['Settings']['border_coef_red']))
-    _buffer_size = int(config['Settings']['size_buffer_saving'])
+    _color = (int(config['Settings.Selecting']['border_coef_blue']),
+              int(config['Settings.Selecting']['border_coef_green']),
+              int(config['Settings.Selecting']['border_coef_red']))
+    _buffer_size = int(config['Settings.Buffer']['size_buffer_saving'])
 
     while True:
         try:
