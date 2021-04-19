@@ -30,6 +30,7 @@ def create_default_config() -> None:
     config['Settings']['border_coef_red'] = '255'
     config['Settings']['border_coef_green'] = '255'
     config['Settings']['border_coef_blue'] = '255'
+    config['Settings']['size_buffer_saving'] = '5'
 
     with open(CONFIG_FILE_NAME, 'w') as file:
         config.write(file)
@@ -42,12 +43,13 @@ def send_to_clipboard(clip_type, data) -> None:
     win32clipboard.CloseClipboard()
 
 
-def make_screenshot(point1: (int, int), point2: (int, int)) -> None:
+def make_screenshot(point1: (int, int), point2: (int, int), buf_size) -> None:
     _datetime = datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S")
 
     if not os.path.exists('screenshots'):
         os.mkdir('screenshots')
 
+    screenshot = None
     flag_screenshot_made = False
     while not flag_screenshot_made:
         try:
@@ -64,7 +66,7 @@ def make_screenshot(point1: (int, int), point2: (int, int)) -> None:
 
     list_screenshots = os.listdir(f'{os.path.dirname(__file__)}\\screenshots')
     list_screenshots.sort()
-    for i in range(len(list_screenshots) - 5):
+    for i in range(len(list_screenshots) - buf_size):
         try:
             os.remove(f'{os.path.dirname(__file__)}\\screenshots\\'
                       f'{list_screenshots[i]}')
@@ -89,6 +91,7 @@ def main() -> None:
     _color = (int(config['Settings']['border_coef_blue']),
               int(config['Settings']['border_coef_green']),
               int(config['Settings']['border_coef_red']))
+    _buffer_size = int(config['Settings']['size_buffer_saving'])
 
     while True:
         try:
@@ -112,7 +115,7 @@ def main() -> None:
                     _queue.append((x, y))
 
                 elif event == cv2.EVENT_LBUTTONUP:
-                    make_screenshot(_queue[0], (x, y))
+                    make_screenshot(_queue[0], (x, y), _buffer_size)
                     _queue.pop(0)
 
                 elif event == cv2.EVENT_MOUSEMOVE:
