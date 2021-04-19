@@ -21,14 +21,19 @@ def make_screenshot(point1: (int, int), point2: (int, int)) -> None:
     if not os.path.exists('screenshots'):
         os.mkdir('screenshots')
 
-    screenshot = pyautogui.screenshot(
-        f'screenshots/screenshot_{_datetime}.png',
-        region=(point1[0],
-                point1[1],
-                point2[0] - point1[0],
-                point2[1] - point1[1]))
-    print(f'Saved to file: `{os.path.dirname(__file__)}\\screenshots\\'
-          f'screenshot_{_datetime}.png`')
+    flag_screenshot_made = False
+    while not flag_screenshot_made:
+        try:
+            _x0 = min(point1[0], point2[0])
+            _y0 = min(point1[1], point2[1])
+            _x1 = max(point1[0], point2[0])
+            _y1 = max(point1[1], point2[1])
+            screenshot = pyautogui.screenshot(
+                f'screenshots/screenshot_{_datetime}.png',
+                region=(_x0, _y0, _x1 - _x0, _y1 - _y0))
+            flag_screenshot_made = True
+        except AttributeError:
+            pass
 
     list_screenshots = os.listdir(f'{os.path.dirname(__file__)}\\screenshots')
     list_screenshots.sort()
@@ -36,8 +41,6 @@ def make_screenshot(point1: (int, int), point2: (int, int)) -> None:
         try:
             os.remove(f'{os.path.dirname(__file__)}\\screenshots\\'
                       f'{list_screenshots[i]}')
-            print(f'Removed file: `{os.path.dirname(__file__)}\\screenshots\\'
-                  f'{list_screenshots[i]}`')
         except OSError:
             pass
 
