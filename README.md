@@ -16,6 +16,7 @@ You can also compile it by running the executable bat file `exe_creator.bat`
 3. _module_ **keyboard** - https://github.com/boppreh/keyboard
 4. _module_ **numpy** - https://github.com/numpy/numpy
 5. _module_ **cv2** - https://github.com/opencv/opencv
+6. _module_ **nuitka** - https://github.com/Nuitka/Nuitka
 
 ---
 
