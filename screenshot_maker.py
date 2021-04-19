@@ -6,6 +6,33 @@ import datetime
 import win32clipboard
 from io import BytesIO
 import os
+import configparser
+
+
+CONFIG_FILE_NAME = 'config.ini'
+
+
+def parse_config() -> configparser.ConfigParser:
+    if not os.path.exists(CONFIG_FILE_NAME):
+        create_default_config()
+
+    config = configparser.ConfigParser()
+    config.read(CONFIG_FILE_NAME)
+
+    return config
+
+
+def create_default_config() -> None:
+    config = configparser.ConfigParser()
+
+    config.add_section('Settings')
+    config['Settings']['border_width'] = '2'
+    config['Settings']['border_coef_red'] = '255'
+    config['Settings']['border_coef_green'] = '255'
+    config['Settings']['border_coef_blue'] = '255'
+
+    with open(CONFIG_FILE_NAME, 'w') as file:
+        config.write(file)
 
 
 def send_to_clipboard(clip_type, data) -> None:
@@ -56,6 +83,13 @@ def make_screenshot(point1: (int, int), point2: (int, int)) -> None:
 
 
 def main() -> None:
+    config = parse_config()
+    _width = int(config['Settings']['border_width'])
+    _width_half = (_width + 1) // 2 + 2
+    _color = (int(config['Settings']['border_coef_blue']),
+              int(config['Settings']['border_coef_green']),
+              int(config['Settings']['border_coef_red']))
+
     while True:
         try:
             keyboard.wait('ctrl + print screen')
@@ -76,33 +110,40 @@ def main() -> None:
             def mouse_evt(event, x, y, flags, param):
                 if event == cv2.EVENT_LBUTTONDOWN:
                     _queue.append((x, y))
+
                 elif event == cv2.EVENT_LBUTTONUP:
                     make_screenshot(_queue[0], (x, y))
                     _queue.pop(0)
+
                 elif event == cv2.EVENT_MOUSEMOVE:
+                    temp = cv2.putText(
+                        cv2.cvtColor(_array_image, cv2.COLOR_RGB2BGR),
+                        f' ({x}, {y})', (x, y), cv2.FONT_HERSHEY_PLAIN, 1,
+                        (255, 255, 255), 1)
+
                     if len(_queue) != 0:
                         p1 = _queue[0]
                         p2 = (x, y)
 
                         if p2[0] > p1[0]:
                             if p2[1] > p1[1]:
-                                p1 = (p1[0] - 1, p1[1] - 1)
-                                p2 = (p2[0] + 1, p2[1] + 1)
+                                p1 = (p1[0] - _width_half, p1[1] - _width_half)
+                                p2 = (p2[0] + _width_half, p2[1] + _width_half)
                             else:
-                                p1 = (p1[0] - 1, p1[1] + 1)
-                                p2 = (p2[0] + 1, p2[1] - 1)
+                                p1 = (p1[0] - _width_half, p1[1] + _width_half)
+                                p2 = (p2[0] + _width_half, p2[1] - _width_half)
                         else:
                             if p2[1] > p1[1]:
-                                p1 = (p1[0] + 1, p1[1] - 1)
-                                p2 = (p2[0] - 1, p2[1] + 1)
+                                p1 = (p1[0] + _width_half, p1[1] - _width_half)
+                                p2 = (p2[0] - _width_half, p2[1] + _width_half)
                             else:
-                                p1 = (p1[0] + 1, p1[1] + 1)
-                                p2 = (p2[0] - 1, p2[1] - 1)
+                                p1 = (p1[0] + _width_half, p1[1] + _width_half)
+                                p2 = (p2[0] - _width_half, p2[1] - _width_half)
 
-                        cv2.imshow('window', cv2.rectangle(
-                            cv2.cvtColor(_array_image, cv2.COLOR_RGB2BGR),
-                            p1, p2, (255, 255, 255),
-                            thickness=2))
+                        temp = cv2.rectangle(
+                            temp, p1, p2, _color, thickness=_width)
+
+                    cv2.imshow('window', temp)
 
             cv2.setMouseCallback('window', mouse_evt)
             cv2.imshow('window', image)
