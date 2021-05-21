@@ -1,4 +1,4 @@
-# _ScreenshotMaker_
+# _Screenshoter_
 
 ### _Description:_
 
